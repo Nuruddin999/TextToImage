@@ -8,15 +8,19 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.Toast
+import android.view.MotionEvent
+import android.view.View
+import android.widget.*
 import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     lateinit var addImage: Button
     lateinit var image: ImageView
     lateinit var imageUri: Uri
+    lateinit var addText: Button
+    lateinit var mainCanvas: FrameLayout
+    var xPos: Float = 0.0f
+    var yPos: Float = 0.0f
 
     companion object {
         val PICKIMAGE = 100
@@ -29,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         //init
         addImage = findViewById(R.id.addImageButton)
         image = findViewById(R.id.imageView)
+        addText = findViewById(R.id.addTextButton)
+        mainCanvas=findViewById(R.id.mainCanvas)
         //
         //add Image
         addImage.setOnClickListener {
@@ -47,20 +53,37 @@ class MainActivity : AppCompatActivity() {
             gallery.setType("image/*")
             startActivityForResult(gallery, PICKIMAGE)
         }
+        //add Text
+        addText.setOnClickListener {
+var text=TextView(this)
+            text.text="Hello"
+            mainCanvas.addView(text)
+            text.setOnTouchListener(object : View.OnTouchListener{
+                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                if (event?.action==MotionEvent.ACTION_MOVE){
+                    text.x=event.x
+                    text.y=event.y
+
+                }
+                    return true
+                }
+            })
+        }
 
     }
+
 
     private fun pickImageFromGallery() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-when (requestCode){
-    PERMISSION_CODE->if (grantResults.size>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-        pickImageFromGallery()
-    } else {
-        Toast.makeText(this,"Permission denied", Toast.LENGTH_LONG).show()
-    }
-}
+        when (requestCode) {
+            PERMISSION_CODE -> if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                pickImageFromGallery()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -7,18 +7,35 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity"
 android:orientation="vertical">
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+
+
             <Button
                     android:id="@+id/addImageButton"
                     android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="add"/>
-            <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-            />
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+    <FrameLayout
+            android:id="@+id/mainCanvas"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+    </FrameLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button
+                android:id="@+id/addTextButton"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="add"/>
+    </LinearLayout>
 
 </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
