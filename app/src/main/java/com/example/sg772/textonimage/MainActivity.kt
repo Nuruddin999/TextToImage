@@ -3,13 +3,16 @@ package com.example.sg772.textonimage
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Layout
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import java.util.jar.Manifest
 
@@ -56,18 +59,33 @@ class MainActivity : AppCompatActivity() {
         //add Text
         addText.setOnClickListener {
 var text=TextView(this)
-            text.text="Hello"
-            mainCanvas.addView(text)
+            text.height=FrameLayout.LayoutParams.WRAP_CONTENT
+            text.width==FrameLayout.LayoutParams.WRAP_CONTENT
+            text.text="enter text"
+            text.setTextColor(Color.RED)
+            text.isInEditMode
             text.setOnTouchListener(object : View.OnTouchListener{
                 override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                if (event?.action==MotionEvent.ACTION_MOVE){
-                    text.x=event.x
-                    text.y=event.y
+                    when (event?.action) {
+                        MotionEvent.ACTION_UP -> {
+                            text.x = event.x
+                            text.y = event.y
+                        }
+                        MotionEvent.ACTION_DOWN -> {
+                            text.x = event.x
+                            text.y = event.y
+                        }
+                        MotionEvent.ACTION_MOVE -> {
+                            text.x = event.x
+                            text.y = event.y
+                        }
 
-                }
-                    return true
+                    }
+return true
                 }
             })
+            mainCanvas.addView(text)
+
         }
 
     }
