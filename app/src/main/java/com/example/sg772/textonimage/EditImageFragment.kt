@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
+import com.example.sg772.textonimage.Interfaces.EditImageFragmentListener
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,80 +25,84 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class EditImageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+class EditImageFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    // TODO: Rename and change types of parameters
+
+    // private var listener: OnFragmentInteractionListener? = null
+    lateinit var listener: EditImageFragmentListener
+    lateinit var seekbar_brightness: SeekBar
+    lateinit var seekbar_constrants: SeekBar
+    lateinit var seekbar_saturation: SeekBar
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_image, container, false)
+        var itemView: View = inflater.inflate(R.layout.fragment_edit_image, container, false)
+        seekbar_brightness = itemView.findViewById(R.id.seekbar_brightness)
+        seekbar_constrants = itemView.findViewById(R.id.seekbar_constraint)
+        seekbar_saturation = itemView.findViewById(R.id.seekbar_saturation)
+        seekbar_brightness.max = 200
+        seekbar_brightness.setProgress(100)
+        seekbar_constrants.max = 20
+        seekbar_constrants.setProgress(0)
+        seekbar_saturation.max = 30
+        seekbar_saturation.setProgress(10)
+        seekbar_brightness.setOnSeekBarChangeListener(this)
+        seekbar_constrants.setOnSeekBarChangeListener(this)
+        seekbar_saturation.setOnSeekBarChangeListener(this)
+        return itemView
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        if (listener != null) {
+            if (seekBar!!.id == R.id.seekbar_brightness) {
+                listener.onBrightnessChanged(progress - 100)
+            }else if (seekBar.id==R.id.seekbar_constraint){
+                var mean=progress+10
+                var float=.10f*mean
+                listener.onConstrantChanged(float)
+            } else if (seekBar.id==R.id.seekbar_saturation){
+                var float=.10f*progress
+                listener.onSaturationChanged(float)
+            }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+
+            /*    when (seekBar?.id) {
+                    R.id.seekbar_brightness -> listener.onBrightnessChanged(progress - 100)
+                    R.id.seekbar_constraint -> {
+                            progress+=10
+                        var value: Float = .10f * progress
+                        listener.onConstrantChanged(value)
+                    }
+                    R.id.seekbar_saturation -> {
+                        var value: Float = .10f * progress
+                        listener.onSaturationChanged( value)
+                    }
+
+                }*/
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+    override fun onStartTrackingTouch(seekBar: SeekBar?) {
+        if (listener != null) {
+            listener.onEditStarted()
+        }
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    override fun onStopTrackingTouch(seekBar: SeekBar?) {
+        if (listener != null) {
+            listener.onEditCompleted()
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditImageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditImageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    fun resetControlls() {
+        seekbar_brightness.setProgress(100)
+        seekbar_constrants.setProgress(0)
+        seekbar_saturation.setProgress(10)
     }
 }

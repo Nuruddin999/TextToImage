@@ -1,12 +1,24 @@
 package com.example.sg772.textonimage
 
-import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.sg772.textonimage.Adapter.ThumbnailAdapter
+import com.example.sg772.textonimage.Interfaces.FiltersFragmentListener
+import com.example.sg772.textonimage.Utils.BitmapUtils
+import com.example.sg772.textonimage.Utils.SpacesItemDecoration
+import com.zomato.photofilters.FilterPack
+import com.zomato.photofilters.imageprocessors.Filter
+import com.zomato.photofilters.utils.ThumbnailItem
+import com.zomato.photofilters.utils.ThumbnailsManager
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,46 +35,83 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class ImageFiltersFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    // TODO: Rename and change types of parameters
+    lateinit var listener: FiltersFragmentListener
+    lateinit var recyclerView: RecyclerView
+    lateinit var thumbnailList: ArrayList<ThumbnailItem>
+    lateinit var thumbnailAdapter: ThumbnailAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image_filters, container, false)
+
+        var itemView: View = inflater.inflate(R.layout.fragment_image_filters, container, false)
+        thumbnailList = ArrayList()
+        thumbnailAdapter = ThumbnailAdapter(thumbnailList, this, activity)
+        recyclerView = itemView.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        var space: Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8F, resources.displayMetrics)
+        recyclerView.addItemDecoration(SpacesItemDecoration(space.toInt()))
+        recyclerView.adapter = thumbnailAdapter
+        displayThumbNail(null)
+        return itemView
+    }
+
+    open fun displayThumbNail(bitmap: Bitmap?) {
+        var runnable = object : Runnable {
+            override fun run() {
+                var thumbImg: Bitmap?
+                if (bitmap == null)
+                    thumbImg = BitmapUtils.getBitmapFromAsests(activity, MainActivity.pictureName, 100, 100)
+                else
+                    thumbImg = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+
+                if (thumbImg == null)
+                    return
+
+                ThumbnailsManager.clearThumbs()
+                thumbnailList.clear()
+                var thumbnailItem = ThumbnailItem()
+                thumbnailItem.image = thumbImg
+                thumbnailItem.filterName = "Normal"
+                ThumbnailsManager.addThumb(thumbnailItem)
+                var filters = FilterPack.getFilterPack(activity) as MutableList<Filter>
+                for (f in filters) {
+                    var thumbnailItem = ThumbnailItem()
+                    thumbnailItem.image = thumbImg
+                    thumbnailItem.filter=f
+                    thumbnailItem.filterName = f.name
+                    ThumbnailsManager.addThumb(thumbnailItem)
+                    Log.d("filterpack", f.name)
+                }
+                thumbnailList.addAll(ThumbnailsManager.processThumbs(activity))
+                activity?.runOnUiThread(object : Runnable {
+                    override fun run() {
+                        thumbnailAdapter.notifyDataSetChanged()
+                    }
+                })
+            }
+        }
+        Thread(runnable).start()
+    }
+
+    override fun onFilterSelected(filter: Filter) {
+        if (listener != null) {
+            listener.onFilterSelected(filter)
+        } else {
+            return
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -80,23 +129,5 @@ class ImageFiltersFragment : Fragment() {
         fun onFragmentInteraction(uri: Uri)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ImageFiltersFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ImageFiltersFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
