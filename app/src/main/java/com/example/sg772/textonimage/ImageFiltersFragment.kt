@@ -38,13 +38,21 @@ private const val ARG_PARAM2 = "param2"
 class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
 
 
+
     // TODO: Rename and change types of parameters
-    lateinit var listener: FiltersFragmentListener
+ lateinit var listener: FiltersFragmentListener
     lateinit var recyclerView: RecyclerView
     lateinit var thumbnailList: ArrayList<ThumbnailItem>
     lateinit var thumbnailAdapter: ThumbnailAdapter
 
+companion object {
+    lateinit var instance: ImageFiltersFragment
+    open fun newInstance():ImageFiltersFragment{
 
+            instance=ImageFiltersFragment()
+        return instance
+    }
+}
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,34 +108,9 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
         }
         Thread(runnable).start()
     }
-
     override fun onFilterSelected(filter: Filter) {
-        if (listener != null) {
-            listener.onFilterSelected(filter)
-        } else {
-            return
-        }
-
+if (listener!=null){
+    listener.onFilterSelected(filter)
+}
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-
 }

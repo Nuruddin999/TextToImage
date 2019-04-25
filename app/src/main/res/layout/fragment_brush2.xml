@@ -3,60 +3,52 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:layout_gravity="center_vertical"
-              android:orientation="vertical"
-              android:paddingLeft="16dp"
-              android:paddingRight="16dp"
+              tools:context=".BrushFragment"
+android:orientation="vertical">
 
-              tools:context=".EditImageFragment">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:paddingBottom="10dp"
+                  android:paddingTop="10dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:text="Size"
+                  android:textSize="18sp"
+                  android:textStyle="bold"
 
+                  android:textColor="@color/colorPrimaryDark"/>
+        <SeekBar
+                android:id="@+id/seekbar_brush_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-android:orientation="vertical"
-android:paddingBottom="10dp"
-android:paddingTop="10dp">
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:text="Brightness"
-              android:textSize="18sp"
-              android:textStyle="bold"
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:paddingBottom="10dp"
+                  android:paddingTop="10dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:text="Opacity"
+                  android:textSize="18sp"
+                  android:textStyle="bold"
 
-              android:textColor="@color/colorPrimaryDark"/>
-    <SeekBar
-            android:id="@+id/seekbar_brightness"
+                  android:textColor="@color/colorPrimaryDark"/>
+        <SeekBar
+                android:id="@+id/seekbar_opacity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/color_list"
             android:layout_width="match_parent"
-             android:layout_height="wrap_content"/>
+            android:layout_height="250dp">
 
-</LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:paddingBottom="10dp"
-                  android:paddingTop="10dp">
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:text="Constraint"
-                  android:textSize="18sp"
-                  android:textStyle="bold"
-
-                  android:textColor="@color/colorPrimaryDark"/>
-        <SeekBar
-                android:id="@+id/seekbar_constraint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-    </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:orientation="vertical"
-                  android:paddingBottom="10dp"
-                  android:paddingTop="10dp">
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:text="Saturation"
-                  android:textSize="18sp"
-                  android:textStyle="bold"
-                  android:textColor="@color/colorPrimaryDark"/>
-        <SeekBar
-                android:id="@+id/seekbar_saturation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-    </LinearLayout>
+    </android.support.v7.widget.RecyclerView>
+    <ToggleButton
+            android:id="@+id/brush_button"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:text="Brush"
+    android:textColor="@color/colorPrimaryDark"
+    android:textSize="18sp"/>
 
 </LinearLayout>

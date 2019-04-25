@@ -3,6 +3,7 @@ package com.example.sg772.textonimage
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,14 @@ class EditImageFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
     lateinit var seekbar_constrants: SeekBar
     lateinit var seekbar_saturation: SeekBar
 
+    companion object {
+        lateinit var instance:EditImageFragment
+        open fun newInstance():EditImageFragment{
+
+                      instance= EditImageFragment()
+            return instance
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
