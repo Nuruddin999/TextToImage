@@ -26,13 +26,13 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class EditImageFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
+class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChangeListener {
 
 
     // TODO: Rename and change types of parameters
 
     // private var listener: OnFragmentInteractionListener? = null
-    lateinit var listener: EditImageFragmentListener
+   var listener: EditImageFragmentListener?=null
     lateinit var seekbar_brightness: SeekBar
     lateinit var seekbar_constrants: SeekBar
     lateinit var seekbar_saturation: SeekBar
@@ -70,14 +70,14 @@ class EditImageFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         if (listener != null) {
             if (seekBar!!.id == R.id.seekbar_brightness) {
-                listener.onBrightnessChanged(progress - 100)
+                listener?.onBrightnessChanged(progress - 100)
             }else if (seekBar.id==R.id.seekbar_constraint){
                 var mean=progress+10
                 var float=.10f*mean
-                listener.onConstrantChanged(float)
+                listener?.onConstrantChanged(float)
             } else if (seekBar.id==R.id.seekbar_saturation){
                 var float=.10f*progress
-                listener.onSaturationChanged(float)
+                listener?.onSaturationChanged(float)
             }
 
 
@@ -99,13 +99,13 @@ class EditImageFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
 
     override fun onStartTrackingTouch(seekBar: SeekBar?) {
         if (listener != null) {
-            listener.onEditStarted()
+            listener?.onEditStarted()
         }
     }
 
     override fun onStopTrackingTouch(seekBar: SeekBar?) {
         if (listener != null) {
-            listener.onEditCompleted()
+            listener?.onEditCompleted()
         }
     }
 

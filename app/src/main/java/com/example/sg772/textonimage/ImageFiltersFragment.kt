@@ -1,8 +1,12 @@
 package com.example.sg772.textonimage
 
+import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -35,12 +39,12 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
+class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListener {
 
 
 
     // TODO: Rename and change types of parameters
- lateinit var listener: FiltersFragmentListener
+var listener: FiltersFragmentListener?=null
     lateinit var recyclerView: RecyclerView
     lateinit var thumbnailList: ArrayList<ThumbnailItem>
     lateinit var thumbnailAdapter: ThumbnailAdapter
@@ -53,6 +57,15 @@ companion object {
         return instance
     }
 }
+    override fun onStart() {
+        super.onStart()
+        var dialog: Dialog =dialog
+        if (dialog!=null){
+            dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -110,7 +123,7 @@ companion object {
     }
     override fun onFilterSelected(filter: Filter) {
 if (listener!=null){
-    listener.onFilterSelected(filter)
+    listener?.onFilterSelected(filter)
 }
     }
 }

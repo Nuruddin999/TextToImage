@@ -22,6 +22,7 @@ import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter
 import android.Manifest.permission
+import android.graphics.Typeface
 import android.net.Uri
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.CardView
@@ -41,7 +42,8 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     lateinit var filters_menu: CardView
     lateinit var edit_menu: CardView
     lateinit var brush_menu: CardView
-    lateinit var textadd_menu:CardView
+    lateinit var imageadd_menu: CardView
+    lateinit var textadd_menu: CardView
     lateinit var image_preview: PhotoEditorView
     lateinit var photoEditor: PhotoEditor
     lateinit var coordinatorLayout: android.support.constraint.ConstraintLayout
@@ -59,7 +61,8 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
 
 
     companion object {
-        val PICKIMAGE = 1000
+        val INSERTIMAGE = 1000
+        val PICKIMAGE = 1001
         open val pictureName: String = "flash.jpg"
         var native_libs = System.loadLibrary("NativeImageProcessor")
     }
@@ -79,24 +82,21 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         filters_menu = findViewById(R.id.filters_menu)
         edit_menu = findViewById(R.id.edit_menu)
         brush_menu = findViewById(R.id.brush_menu)
-        textadd_menu=findViewById(R.id.addText_menu)
+        textadd_menu = findViewById(R.id.addText_menu)
+        imageadd_menu = findViewById(R.id.adImage_menu)
         content_area = findViewById(R.id.content_area)
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 var imageFiltersFragment = ImageFiltersFragment.newInstance()
                 imageFiltersFragment.listener = this@MainActivity
-                var fragmentTransaction =
-                    supportFragmentManager.beginTransaction().replace(R.id.content_area, imageFiltersFragment).commit()
-                // imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment.tag)
+                imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment.tag)
             }
         })
         edit_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 var editImageFragment = EditImageFragment.newInstance()
                 editImageFragment.listener = this@MainActivity
-                var fragmentTransaction =
-                    supportFragmentManager.beginTransaction().replace(R.id.content_area, editImageFragment).commit()
-                // editImageFragment.show(supportFragmentManager, editImageFragment.tag)
+                editImageFragment.show(supportFragmentManager, editImageFragment.tag)
             }
         })
         brush_menu.setOnClickListener(object : View.OnClickListener {
@@ -114,10 +114,34 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
                 textFragment.show(supportFragmentManager, textFragment.tag)
             }
         })
+        imageadd_menu.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+               addImage()
+            }
+        })
 
         loadImage()
 
 
+    }
+
+    private fun addImage() {
+        Dexter.withActivity(this)
+            .withPermissions(permission.READ_EXTERNAL_STORAGE, permission.WRITE_EXTERNAL_STORAGE)
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    var intent = Intent(Intent.ACTION_PICK)
+                    intent.setType("image/*")
+                    startActivityForResult(intent, INSERTIMAGE)
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: MutableList<PermissionRequest>?,
+                    token: PermissionToken?
+                ) {
+                }
+            })
+            .check()
     }
 
     private fun loadImage() {
@@ -217,10 +241,11 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
 
     //Brush-end
     //Add Text
-    override fun adTextListener(text: String, color: Int) {
-photoEditor.addText(text,color)
+    override fun adTextListener(typeface: Typeface,text: String, color: Int) {
+        photoEditor.addText(typeface,text,color)
     }
-//Add Text-end
+
+    //Add Text-end
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
@@ -245,35 +270,34 @@ photoEditor.addText(text,color)
             .withPermissions(permission.READ_EXTERNAL_STORAGE, permission.WRITE_EXTERNAL_STORAGE)
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-     photoEditor.saveAsBitmap(object : OnSaveBitmap{
-         override fun onFailure(e: Exception?) {
-             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-         }
+                    photoEditor.saveAsBitmap(object : OnSaveBitmap {
+                        override fun onFailure(e: Exception?) {
+                        }
 
-         override fun onBitmapReady(saveBitmap: Bitmap?) {
-             image_preview.source.setImageBitmap(saveBitmap)
-             val stringPath = BitmapUtils.insertInGallery(
-                 contentResolver,
-                 saveBitmap,
-                 "${System.currentTimeMillis()}.jpg",
-                 null
-             )
-             if (!TextUtils.isEmpty(stringPath)) {
-                 var snackbar =
-                     Snackbar.make(coordinatorLayout, "Image saved to gallery! ", Snackbar.LENGTH_LONG)
-                         .setAction("OPEN", object : View.OnClickListener {
-                             override fun onClick(v: View?) {
-                                 openImage(stringPath)
-                             }
-                         })
-                         .show()
-             } else {
-                 var snackbar =
-                     Snackbar.make(coordinatorLayout, "Failed to save image! ", Snackbar.LENGTH_LONG)
-                         .show()
-             }
-         }
-     })
+                        override fun onBitmapReady(saveBitmap: Bitmap?) {
+                            image_preview.source.setImageBitmap(saveBitmap)
+                            val stringPath = BitmapUtils.insertInGallery(
+                                contentResolver,
+                                saveBitmap,
+                                "${System.currentTimeMillis()}.jpg",
+                                null
+                            )
+                            if (!TextUtils.isEmpty(stringPath)) {
+                                var snackbar =
+                                    Snackbar.make(coordinatorLayout, "Image saved to gallery! ", Snackbar.LENGTH_LONG)
+                                        .setAction("OPEN", object : View.OnClickListener {
+                                            override fun onClick(v: View?) {
+                                                openImage(stringPath)
+                                            }
+                                        })
+                                        .show()
+                            } else {
+                                var snackbar =
+                                    Snackbar.make(coordinatorLayout, "Failed to save image! ", Snackbar.LENGTH_LONG)
+                                        .show()
+                            }
+                        }
+                    })
                 }
 
                 override fun onPermissionRationaleShouldBeShown(
@@ -315,27 +339,30 @@ photoEditor.addText(text,color)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if (requestCode == PICKIMAGE && resultCode == RESULT_OK && data != null) {
-            data?.data?.let {
-                val bitmap = BitmapUtils.getBitmapFromGallery(this, it, 800, 800)
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICKIMAGE) {
+                data?.data?.let {
+                    val bitmap = BitmapUtils.getBitmapFromGallery(this, it, 800, 800)
 
-                original_filter_bitmap.recycle()
-                final_bitmap.recycle()
-                filtered_bitmap.recycle()
-                original_filter_bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                image_preview.source.setImageBitmap(original_filter_bitmap)
-                bitmap.recycle()
-                imageFiltersFragment?.displayThumbNail(original_filter_bitmap)
+                    original_filter_bitmap.recycle()
+                    final_bitmap.recycle()
+                    filtered_bitmap.recycle()
+                    original_filter_bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                    final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                    filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
+                    image_preview.source.setImageBitmap(original_filter_bitmap)
+                    bitmap.recycle()
+                    imageFiltersFragment?.displayThumbNail(original_filter_bitmap)
 
+                }
+            } else if
+                           (requestCode == INSERTIMAGE)
+            {
+                data?.data?.let {
+                    var bitmap = BitmapUtils.getBitmapFromGallery(this, it, 300, 300)
+                    photoEditor.addImage(bitmap)
+                }
             }
-            /*  original_filter_bitmap.recycle()
-              final_bitmap.recycle()
-              filtered_bitmap.recycle()
-              original_filter_bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-              final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-              filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)*/
 
 
         }

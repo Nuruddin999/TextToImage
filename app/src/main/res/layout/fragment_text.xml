@@ -10,16 +10,51 @@ android:orientation="vertical">
     <EditText
             android:id="@+id/text_input"
             android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:hint="Enter text"/>
+            android:maxLines="10"
+            android:inputType="textMultiLine"
+            android:textAlignment="center"
+            android:background="@drawable/text_input_background"
+    android:hint="Enter text"
+            android:padding="62dp"
+    />
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:text="Select font"
+    android:textSize="18sp"
+              android:textColor="#fff"
+              android:typeface="sans"
+              android:textStyle="bold"
+              android:layout_marginLeft="12dp"
+   />
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/font_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
+
+    </android.support.v7.widget.RecyclerView>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:text="Select color"
+              android:textSize="18sp"
+              android:textColor="#fff"
+              android:typeface="sans"
+              android:textStyle="bold"
+              android:layout_marginLeft="12dp"
+    />
     <android.support.v7.widget.RecyclerView
             android:id="@+id/colors_list"
             android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+           >
 
     </android.support.v7.widget.RecyclerView>
+
     <Button
             android:id="@+id/text_input_done_button"
-            android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:text="Done"/>
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:text="Done"
+    android:background="@drawable/addtext"
+    android:layout_marginTop="20sp"
+    android:layout_gravity="center"
+   android:layout_marginBottom="20sp" />
 
 </LinearLayout>
