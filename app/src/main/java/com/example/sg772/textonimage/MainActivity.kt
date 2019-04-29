@@ -83,12 +83,13 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         brush_menu = findViewById(R.id.brush_menu)
         textadd_menu = findViewById(R.id.addText_menu)
         imageadd_menu = findViewById(R.id.adImage_menu)
+        imageFiltersFragment = ImageFiltersFragment.newInstance()
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                var imageFiltersFragment = ImageFiltersFragment.newInstance()
-                imageFiltersFragment.listener = this@MainActivity
+
+                imageFiltersFragment!!.listener = this@MainActivity
               /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
-                imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment.tag)
+                imageFiltersFragment!!.show(supportFragmentManager, imageFiltersFragment!!.tag)
             }
         })
         edit_menu.setOnClickListener(object : View.OnClickListener {

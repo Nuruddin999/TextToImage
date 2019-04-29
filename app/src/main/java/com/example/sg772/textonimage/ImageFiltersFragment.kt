@@ -47,7 +47,7 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
     // TODO: Rename and change types of parameters
 var listener: FiltersFragmentListener?=null
     lateinit var recyclerView: RecyclerView
-    lateinit var thumbnailList: ArrayList<ThumbnailItem>
+ var thumbnailList: ArrayList<ThumbnailItem>?=null
     lateinit var thumbnailAdapter: ThumbnailAdapter
 
 companion object {
@@ -76,7 +76,7 @@ companion object {
 
         var itemView: View = inflater.inflate(R.layout.fragment_image_filters, container, false)
         thumbnailList = ArrayList()
-        thumbnailAdapter = ThumbnailAdapter(thumbnailList, this, activity)
+        thumbnailAdapter = ThumbnailAdapter(thumbnailList!!, this, activity)
         recyclerView = itemView.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         var space: Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8F, resources.displayMetrics)
@@ -99,12 +99,12 @@ companion object {
                     return
 
                 ThumbnailsManager.clearThumbs()
-                thumbnailList.clear()
+                thumbnailList?.clear()
                 var thumbnailItem = ThumbnailItem()
                 thumbnailItem.image = thumbImg
                 thumbnailItem.filterName = "Normal"
                 ThumbnailsManager.addThumb(thumbnailItem)
-                var filters = FilterPack.getFilterPack(activity)
+                var filters = FilterPack.getFilterPack(activity) as MutableList
                 for (f in filters) {
                     var thumbnailItem = ThumbnailItem()
                     thumbnailItem.image = thumbImg
@@ -113,7 +113,7 @@ companion object {
                     ThumbnailsManager.addThumb(thumbnailItem)
                     Log.d("filterpack", f.name)
                 }
-                thumbnailList.addAll(ThumbnailsManager.processThumbs(activity))
+                thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
                 activity?.runOnUiThread(object : Runnable {
                     override fun run() {
                         thumbnailAdapter.notifyDataSetChanged()
