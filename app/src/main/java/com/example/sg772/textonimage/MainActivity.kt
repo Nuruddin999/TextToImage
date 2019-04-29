@@ -244,14 +244,6 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
                 imageFiltersFragment.displayThumbNail(original_filter_bitmap)
 
             }
-            /*  original_filter_bitmap.recycle()
-              final_bitmap.recycle()
-              filtered_bitmap.recycle()
-              original_filter_bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-              final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-              filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)*/
-
-
         }
     }
 }
