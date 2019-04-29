@@ -41,7 +41,7 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
     // TODO: Rename and change types of parameters
     lateinit var listener: FiltersFragmentListener
     lateinit var recyclerView: RecyclerView
-    lateinit var thumbnailList: ArrayList<ThumbnailItem>
+ var thumbnailList: ArrayList<ThumbnailItem>?=null
     lateinit var thumbnailAdapter: ThumbnailAdapter
 
 
@@ -53,7 +53,7 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
 
         var itemView: View = inflater.inflate(R.layout.fragment_image_filters, container, false)
         thumbnailList = ArrayList()
-        thumbnailAdapter = ThumbnailAdapter(thumbnailList, this, activity)
+        thumbnailAdapter = ThumbnailAdapter(thumbnailList!!, this, activity)
         recyclerView = itemView.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         var space: Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8F, resources.displayMetrics)
@@ -76,7 +76,7 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
                     return
 
                 ThumbnailsManager.clearThumbs()
-                thumbnailList.clear()
+                thumbnailList!!.clear()
                 var thumbnailItem = ThumbnailItem()
                 thumbnailItem.image = thumbImg
                 thumbnailItem.filterName = "Normal"
@@ -90,7 +90,7 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
                     ThumbnailsManager.addThumb(thumbnailItem)
                     Log.d("filterpack", f.name)
                 }
-                thumbnailList.addAll(ThumbnailsManager.processThumbs(activity))
+                thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
                 activity?.runOnUiThread(object : Runnable {
                     override fun run() {
                         thumbnailAdapter.notifyDataSetChanged()

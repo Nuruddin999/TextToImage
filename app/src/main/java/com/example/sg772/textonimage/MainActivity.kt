@@ -240,6 +240,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
                 final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                 filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                 image_preview.setImageBitmap(original_filter_bitmap)
+                bitmap.recycle()
                 imageFiltersFragment.displayThumbNail(original_filter_bitmap)
 
             }
