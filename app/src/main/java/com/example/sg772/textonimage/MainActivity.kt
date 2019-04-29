@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     lateinit var final_bitmap: Bitmap
     var editImageFragment: EditImageFragment? = null
     var imageFiltersFragment: ImageFiltersFragment? = null
-    lateinit var content_area: LinearLayout
 
     var brightnessFinal = 0
     var constrantFinal: Float = 1.0f
@@ -84,11 +83,11 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         brush_menu = findViewById(R.id.brush_menu)
         textadd_menu = findViewById(R.id.addText_menu)
         imageadd_menu = findViewById(R.id.adImage_menu)
-        content_area = findViewById(R.id.content_area)
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 var imageFiltersFragment = ImageFiltersFragment.newInstance()
                 imageFiltersFragment.listener = this@MainActivity
+              /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
                 imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment.tag)
             }
         })
@@ -339,7 +338,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && data!=null)  {
             if (requestCode == PICKIMAGE) {
                 data?.data?.let {
                     val bitmap = BitmapUtils.getBitmapFromGallery(this, it, 800, 800)
@@ -351,10 +350,11 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
                     final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     image_preview.source.setImageBitmap(original_filter_bitmap)
-                    bitmap.recycle()
+
                     imageFiltersFragment?.displayThumbNail(original_filter_bitmap)
 
                 }
+
             } else if
                            (requestCode == INSERTIMAGE)
             {

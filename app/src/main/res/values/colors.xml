@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#A526C7</color>
+    <color name="colorPrimaryDark">#350C40</color>
+    <color name="colorAccent">#691880</color>
+    <color name="buttons">#D230FF</color>
     <color name="selected_filter">#fff</color>
     <color name="normal_filter">#8a8889</color>
+    <color name="backgrond_dark">#1e2832</color>
 </resources>

@@ -1,15 +1,18 @@
 package com.example.sg772.textonimage
 
 
+import android.app.Dialog
 import android.os.Bundle
 import android.app.Fragment
 import android.graphics.Color
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.SeekBar
 import android.widget.ToggleButton
@@ -95,6 +98,15 @@ class BrushFragment : BottomSheetDialogFragment(), ColorAdapter.ColorAdapterList
             return instance
         }
     }
+    override fun onStart() {
+        super.onStart()
+        var dialog: Dialog =dialog
+        if (dialog!=null){
+            dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -106,7 +118,7 @@ class BrushFragment : BottomSheetDialogFragment(), ColorAdapter.ColorAdapterList
         color_list = view.findViewById(R.id.color_list)
         brush_button = view.findViewById(R.id.brush_button)
         color_adapter = ColorAdapter(genColors(),activity, this)
-        color_list.layoutManager = GridLayoutManager(context, 4)
+        color_list.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         color_list.adapter = color_adapter
         seekbar_brushsize.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

@@ -15,6 +15,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.example.sg772.textonimage.Adapter.ThumbnailAdapter
 import com.example.sg772.textonimage.Interfaces.FiltersFragmentListener
 import com.example.sg772.textonimage.Utils.BitmapUtils
@@ -62,7 +63,8 @@ companion object {
         var dialog: Dialog =dialog
         if (dialog!=null){
             dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
 
         }
     }
@@ -102,7 +104,7 @@ companion object {
                 thumbnailItem.image = thumbImg
                 thumbnailItem.filterName = "Normal"
                 ThumbnailsManager.addThumb(thumbnailItem)
-                var filters = FilterPack.getFilterPack(activity) as MutableList<Filter>
+                var filters = FilterPack.getFilterPack(activity)
                 for (f in filters) {
                     var thumbnailItem = ThumbnailItem()
                     thumbnailItem.image = thumbImg

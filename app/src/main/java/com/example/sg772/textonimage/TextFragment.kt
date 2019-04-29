@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -52,7 +53,8 @@ class TextFragment : DialogFragment(), ColorAdapter.ColorAdapterListener, FontAd
         var dialog:Dialog=dialog
         if (dialog!=null){
             dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.window.setBackgroundDrawable(ColorDrawable(Color.BLACK))
+            dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            dialog.window.setBackgroundDrawable(ColorDrawable(android.graphics.Color.BLACK))
 
         }
     }
