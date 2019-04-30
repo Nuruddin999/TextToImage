@@ -43,31 +43,34 @@ private const val ARG_PARAM2 = "param2"
 class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListener {
 
 
-
     // TODO: Rename and change types of parameters
-var listener: FiltersFragmentListener?=null
+    internal var listener: FiltersFragmentListener? = null
     lateinit var recyclerView: RecyclerView
- var thumbnailList: ArrayList<ThumbnailItem>?=null
-    lateinit var thumbnailAdapter: ThumbnailAdapter
+    internal lateinit var thumbnailList: MutableList<ThumbnailItem>
+    internal lateinit var thumbnailAdapter: ThumbnailAdapter
 
-companion object {
-    lateinit var instance: ImageFiltersFragment
-    open fun newInstance():ImageFiltersFragment{
+    companion object {
+        internal var instance: ImageFiltersFragment? = null
+        fun getInstance(): ImageFiltersFragment {
+            if (instance == null) {
+                instance = ImageFiltersFragment()
+            }
+            return instance!!
+        }
 
-            instance=ImageFiltersFragment()
-        return instance
     }
-}
+
     override fun onStart() {
         super.onStart()
-        var dialog: Dialog =dialog
-        if (dialog!=null){
-            dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
+        var dialog: Dialog = dialog
+        if (dialog != null) {
+            dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
 
 
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -87,45 +90,46 @@ companion object {
     }
 
     open fun displayThumbNail(bitmap: Bitmap?) {
-        var runnable = object : Runnable {
-            override fun run() {
-                var thumbImg: Bitmap?
-                if (bitmap == null)
-                    thumbImg = BitmapUtils.getBitmapFromAsests(activity, MainActivity.pictureName, 100, 100)
-                else
-                    thumbImg = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+        var runnable = Runnable {
 
-                if (thumbImg == null)
-                    return
+            var thumbImg: Bitmap?
+            if (bitmap == null)
+                thumbImg = BitmapUtils.getBitmapFromAsests(activity, MainActivity.pictureName, 100, 100)
+            else
+                thumbImg = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
 
-                ThumbnailsManager.clearThumbs()
-                thumbnailList?.clear()
-                var thumbnailItem = ThumbnailItem()
-                thumbnailItem.image = thumbImg
-                thumbnailItem.filterName = "Normal"
-                ThumbnailsManager.addThumb(thumbnailItem)
-                var filters = FilterPack.getFilterPack(activity) as MutableList
-                for (f in filters) {
-                    var thumbnailItem = ThumbnailItem()
-                    thumbnailItem.image = thumbImg
-                    thumbnailItem.filter=f
-                    thumbnailItem.filterName = f.name
-                    ThumbnailsManager.addThumb(thumbnailItem)
-                    Log.d("filterpack", f.name)
-                }
-                thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
-                activity?.runOnUiThread(object : Runnable {
-                    override fun run() {
-                        thumbnailAdapter.notifyDataSetChanged()
-                    }
-                })
+            if (thumbImg == null)
+                return@Runnable
+
+            ThumbnailsManager.clearThumbs()
+            thumbnailList?.clear()
+            val thumbnailItem = ThumbnailItem()
+            thumbnailItem.image = thumbImg
+            thumbnailItem.filterName = "Normal"
+            ThumbnailsManager.addThumb(thumbnailItem)
+            var filters = FilterPack.getFilterPack(activity!!) as MutableList
+            for (f in filters) {
+                val item = ThumbnailItem()
+                item.image = thumbImg
+                item.filter = f
+                item.filterName = f.name
+                ThumbnailsManager.addThumb(item)
+                Log.d("filterpack", f.name)
+            }
+            thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
+            activity!!.runOnUiThread {
+
+                thumbnailAdapter.notifyDataSetChanged()
+
             }
         }
+
         Thread(runnable).start()
     }
+
     override fun onFilterSelected(filter: Filter) {
-if (listener!=null){
-    listener?.onFilterSelected(filter)
-}
+        if (listener != null) {
+            listener!!.onFilterSelected(filter)
+        }
     }
 }

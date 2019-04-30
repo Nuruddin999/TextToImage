@@ -39,23 +39,23 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     textOnImageListener {
 
 
-    lateinit var filters_menu: CardView
-    lateinit var edit_menu: CardView
-    lateinit var brush_menu: CardView
-    lateinit var imageadd_menu: CardView
-    lateinit var textadd_menu: CardView
-    lateinit var image_preview: PhotoEditorView
-    lateinit var photoEditor: PhotoEditor
-    lateinit var coordinatorLayout: android.support.constraint.ConstraintLayout
-    lateinit var original_filter_bitmap: Bitmap
-    lateinit var filtered_bitmap: Bitmap
-    lateinit var final_bitmap: Bitmap
+  internal  lateinit var filters_menu: CardView
+    internal   lateinit var edit_menu: CardView
+    internal   lateinit var brush_menu: CardView
+    internal  lateinit var imageadd_menu: CardView
+    internal  lateinit var textadd_menu: CardView
+    internal  lateinit var image_preview: PhotoEditorView
+    internal    lateinit var photoEditor: PhotoEditor
+    internal  lateinit var coordinatorLayout: android.support.constraint.ConstraintLayout
+    internal  lateinit var original_filter_bitmap: Bitmap
+    internal  lateinit var filtered_bitmap: Bitmap
+    internal    lateinit var final_bitmap: Bitmap
     var editImageFragment: EditImageFragment? = null
     var imageFiltersFragment: ImageFiltersFragment? = null
 
-    var brightnessFinal = 0
-    var constrantFinal: Float = 1.0f
-    var saturationFinal: Float = 1.0f
+   internal var brightnessFinal = 0
+    internal  var constrantFinal: Float = 1.0f
+    internal   var saturationFinal: Float = 1.0f
 //Load native image filters
 
 
@@ -83,10 +83,9 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         brush_menu = findViewById(R.id.brush_menu)
         textadd_menu = findViewById(R.id.addText_menu)
         imageadd_menu = findViewById(R.id.adImage_menu)
-        imageFiltersFragment = ImageFiltersFragment.newInstance()
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-
+var imageFiltersFragment=ImageFiltersFragment.getInstance()
                 imageFiltersFragment!!.listener = this@MainActivity
               /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
                 imageFiltersFragment!!.show(supportFragmentManager, imageFiltersFragment!!.tag)
@@ -147,8 +146,8 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     private fun loadImage() {
         Log.d("pictureName", pictureName)
         original_filter_bitmap = BitmapUtils.getBitmapFromAsests(this, pictureName, 300, 300)
-        filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        filtered_bitmap = original_filter_bitmap!!.copy(Bitmap.Config.ARGB_8888, true)
+        final_bitmap = original_filter_bitmap!!.copy(Bitmap.Config.ARGB_8888, true)
         image_preview.source.setImageBitmap(original_filter_bitmap)
     }
 
