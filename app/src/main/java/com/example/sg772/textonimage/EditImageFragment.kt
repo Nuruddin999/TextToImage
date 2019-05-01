@@ -59,12 +59,13 @@ class EditImageFragment() : Fragment(), SeekBar.OnSeekBarChangeListener {
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+       var progress=progress
         if (listener != null) {
             if (seekBar!!.id == R.id.seekbar_brightness) {
                 listener.onBrightnessChanged(progress - 100)
             }else if (seekBar.id==R.id.seekbar_constraint){
-                var mean=progress+10
-                var float=.10f*mean
+                progress+=10
+                var float=.10f*progress
                 listener.onConstrantChanged(float)
             } else if (seekBar.id==R.id.seekbar_saturation){
                 var float=.10f*progress
