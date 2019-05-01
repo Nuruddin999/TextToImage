@@ -46,7 +46,7 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
     // TODO: Rename and change types of parameters
     internal var listener: FiltersFragmentListener? = null
     lateinit var recyclerView: RecyclerView
-    internal lateinit var thumbnailList: MutableList<ThumbnailItem>
+    internal var thumbnailList: MutableList<ThumbnailItem>?=null
     internal lateinit var thumbnailAdapter: ThumbnailAdapter
 
     companion object {
