@@ -30,9 +30,11 @@ import android.text.TextUtils
 import com.example.sg772.textonimage.Interfaces.BrushListener
 import com.example.sg772.textonimage.Interfaces.textOnImageListener
 import com.karumi.dexter.listener.*
+import com.zomato.photofilters.FilterPack
 import ja.burhanrashid52.photoeditor.OnSaveBitmap
 import ja.burhanrashid52.photoeditor.PhotoEditor
 import ja.burhanrashid52.photoeditor.PhotoEditorView
+import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFragmentListener, BrushListener,
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     internal  lateinit var image_preview: PhotoEditorView
     internal    lateinit var photoEditor: PhotoEditor
     internal  lateinit var coordinatorLayout: android.support.constraint.ConstraintLayout
-    internal  lateinit var original_filter_bitmap: Bitmap
+    open  lateinit var original_filter_bitmap: Bitmap
     internal  lateinit var filtered_bitmap: Bitmap
     internal    lateinit var final_bitmap: Bitmap
   lateinit  var editImageFragment: EditImageFragment
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         val PICKIMAGE = 1001
         open val pictureName: String = "flash.jpg"
         var native_libs = System.loadLibrary("NativeImageProcessor")
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,12 +88,21 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         imageadd_menu = findViewById(R.id.adImage_menu)
         loadImage()
         imageFiltersFragment=ImageFiltersFragment.getInstance()
+
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-
+if(imageFiltersFragment!=null){
+    var  byteArrayOutputStream=ByteArrayOutputStream()
+    original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
+    var byteArray=byteArrayOutputStream.toByteArray()
+    var bundle=Bundle()
+    bundle.putByteArray("image",byteArray)
+    imageFiltersFragment.arguments=bundle
                 imageFiltersFragment!!.listener = this@MainActivity
+
               /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
-                imageFiltersFragment!!.show(supportFragmentManager, imageFiltersFragment!!.tag)
+                imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment!!.tag)}
+
             }
         })
         edit_menu.setOnClickListener(object : View.OnClickListener {
@@ -352,8 +364,9 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
                     final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     image_preview.source.setImageBitmap(original_filter_bitmap)
+                 //   imageFiltersFragment.displayThumbNail(original_filter_bitmap)
 
-                    imageFiltersFragment!!.displayThumbNail(original_filter_bitmap)
+
 
                 }
 

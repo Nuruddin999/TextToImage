@@ -2,6 +2,7 @@ package com.example.sg772.textonimage
 
 import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -46,6 +47,7 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
     // TODO: Rename and change types of parameters
     internal var listener: FiltersFragmentListener? = null
     lateinit var recyclerView: RecyclerView
+    lateinit var bitmap: Bitmap
     internal var thumbnailList: MutableList<ThumbnailItem>?=null
     internal lateinit var thumbnailAdapter: ThumbnailAdapter
 
@@ -85,11 +87,13 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
         var space: Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8F, resources.displayMetrics)
         recyclerView.addItemDecoration(SpacesItemDecoration(space.toInt()))
         recyclerView.adapter = thumbnailAdapter
-        displayThumbNail(null)
+        var byteArray=arguments?.getByteArray("image")
+        bitmap= BitmapFactory.decodeByteArray(byteArray,0,byteArray!!.size)
+        displayThumbNail(bitmap)
         return itemView
     }
 
-    open fun displayThumbNail(bitmap: Bitmap?) {
+   open  fun displayThumbNail(bitmap: Bitmap?) {
         var runnable = Runnable {
 
             var thumbImg: Bitmap?
