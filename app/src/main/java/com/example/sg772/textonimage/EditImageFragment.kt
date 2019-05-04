@@ -34,7 +34,7 @@ class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChange
     // TODO: Rename and change types of parameters
 
     // private var listener: OnFragmentInteractionListener? = null
-   var listener: EditImageFragmentListener?=null
+    var listener: EditImageFragmentListener?=null
     lateinit var seekbar_brightness: SeekBar
     lateinit var seekbar_constrants: SeekBar
     lateinit var seekbar_saturation: SeekBar
@@ -43,7 +43,7 @@ class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChange
         lateinit var instance:EditImageFragment
         open fun newInstance():EditImageFragment{
 
-                      instance= EditImageFragment()
+            instance= EditImageFragment()
             return instance
         }
     }
@@ -79,20 +79,13 @@ class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChange
     }
 
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-       var progress=progress
         if (listener != null) {
             if (seekBar!!.id == R.id.seekbar_brightness) {
                 listener?.onBrightnessChanged(progress - 100)
             }else if (seekBar.id==R.id.seekbar_constraint){
-<<<<<<< HEAD
-                progress+=10
-                var float=.10f*progress
-                listener.onConstrantChanged(float)
-=======
                 var mean=progress+10
                 var float=.10f*mean
                 listener?.onConstrantChanged(float)
->>>>>>> bottomNav
             } else if (seekBar.id==R.id.seekbar_saturation){
                 var float=.10f*progress
                 listener?.onSaturationChanged(float)

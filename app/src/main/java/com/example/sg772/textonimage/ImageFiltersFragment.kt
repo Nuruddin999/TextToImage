@@ -47,10 +47,6 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
     // TODO: Rename and change types of parameters
     internal var listener: FiltersFragmentListener? = null
     lateinit var recyclerView: RecyclerView
-<<<<<<< HEAD
- var thumbnailList: ArrayList<ThumbnailItem>?=null
-    lateinit var thumbnailAdapter: ThumbnailAdapter
-=======
     lateinit var bitmap: Bitmap
     internal var thumbnailList: MutableList<ThumbnailItem>?=null
     internal lateinit var thumbnailAdapter: ThumbnailAdapter
@@ -72,7 +68,6 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
         if (dialog != null) {
             dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
->>>>>>> bottomNav
 
 
         }
@@ -98,42 +93,7 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
         return itemView
     }
 
-<<<<<<< HEAD
-    open fun displayThumbNail(bitmap: Bitmap?) {
-        var runnable = object : Runnable {
-            override fun run() {
-                var thumbImg: Bitmap?
-                if (bitmap == null)
-                    thumbImg = BitmapUtils.getBitmapFromAsests(activity, MainActivity.pictureName, 100, 100)
-                else
-                    thumbImg = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
-
-                if (thumbImg == null)
-                    return
-
-                ThumbnailsManager.clearThumbs()
-                thumbnailList!!.clear()
-                var thumbnailItem = ThumbnailItem()
-                thumbnailItem.image = thumbImg
-                thumbnailItem.filterName = "Normal"
-                ThumbnailsManager.addThumb(thumbnailItem)
-                var filters = FilterPack.getFilterPack(activity) as MutableList<Filter>
-                for (f in filters) {
-                    var thumbnailItem = ThumbnailItem()
-                    thumbnailItem.image = thumbImg
-                    thumbnailItem.filter=f
-                    thumbnailItem.filterName = f.name
-                    ThumbnailsManager.addThumb(thumbnailItem)
-                    Log.d("filterpack", f.name)
-                }
-                thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
-                activity?.runOnUiThread(object : Runnable {
-                    override fun run() {
-                        thumbnailAdapter.notifyDataSetChanged()
-                    }
-                })
-=======
-   open  fun displayThumbNail(bitmap: Bitmap?) {
+    open  fun displayThumbNail(bitmap: Bitmap?) {
         var runnable = Runnable {
 
             var thumbImg: Bitmap?
@@ -161,11 +121,10 @@ class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListene
                 Log.d("filterpack", f.name)
             }
             thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
-            activity!!.runOnUiThread {
+            activity?.runOnUiThread {
 
                 thumbnailAdapter.notifyDataSetChanged()
 
->>>>>>> bottomNav
             }
         }
 

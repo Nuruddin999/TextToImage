@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     textOnImageListener {
 
 
-  internal  lateinit var filters_menu: CardView
+    internal  lateinit var filters_menu: CardView
     internal   lateinit var edit_menu: CardView
     internal   lateinit var brush_menu: CardView
     internal  lateinit var imageadd_menu: CardView
@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
     open  lateinit var original_filter_bitmap: Bitmap
     internal  lateinit var filtered_bitmap: Bitmap
     internal    lateinit var final_bitmap: Bitmap
-  lateinit  var editImageFragment: EditImageFragment
-  lateinit var imageFiltersFragment: ImageFiltersFragment
+    lateinit  var editImageFragment: EditImageFragment
+    lateinit var imageFiltersFragment: ImageFiltersFragment
 
-   internal var brightnessFinal = 0
+    internal var brightnessFinal = 0
     internal  var constrantFinal: Float = 1.0f
     internal   var saturationFinal: Float = 1.0f
 //Load native image filters
@@ -91,17 +91,20 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
 
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-if(imageFiltersFragment!=null){
-    var  byteArrayOutputStream=ByteArrayOutputStream()
-    original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
-    var byteArray=byteArrayOutputStream.toByteArray()
-    var bundle=Bundle()
-    bundle.putByteArray("image",byteArray)
-    imageFiltersFragment.arguments=bundle
-                imageFiltersFragment!!.listener = this@MainActivity
+                if(imageFiltersFragment!=null){
+                    var  byteArrayOutputStream=ByteArrayOutputStream()
+                    original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
+                    var byteArray=byteArrayOutputStream.toByteArray()
+                    var bundle=Bundle()
+                    bundle.putByteArray("image",byteArray)
+                    imageFiltersFragment.arguments=bundle
+                    imageFiltersFragment!!.listener = this@MainActivity
 
-              /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
-                imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment!!.tag)}
+                    /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
+                    imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment!!.tag)}
+                else {
+                    return
+                }
 
             }
         })
@@ -129,7 +132,7 @@ if(imageFiltersFragment!=null){
         })
         imageadd_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-               addImage()
+                addImage()
             }
         })
 
@@ -364,19 +367,8 @@ if(imageFiltersFragment!=null){
                     final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     image_preview.source.setImageBitmap(original_filter_bitmap)
-                 //   imageFiltersFragment.displayThumbNail(original_filter_bitmap)
+                    //   imageFiltersFragment.displayThumbNail(original_filter_bitmap)
 
-
-
-                original_filter_bitmap.recycle()
-                final_bitmap.recycle()
-                filtered_bitmap.recycle()
-                original_filter_bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
-                image_preview.source.setImageBitmap(original_filter_bitmap)
-                bitmap.recycle()
-                imageFiltersFragment.displayThumbNail(original_filter_bitmap)
 
 
                 }
@@ -389,6 +381,7 @@ if(imageFiltersFragment!=null){
                     photoEditor.addImage(bitmap)
                 }
             }
+
 
         }
     }
