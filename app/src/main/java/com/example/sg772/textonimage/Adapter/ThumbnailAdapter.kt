@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.example.sg772.textonimage.Interfaces.FiltersFragmentListener
 import com.example.sg772.textonimage.R
 import com.zomato.photofilters.utils.ThumbnailItem
@@ -22,11 +21,11 @@ class ThumbnailAdapter : RecyclerView.Adapter<ThumbnailAdapter.MyViewHolder> {
 
     constructor(
         thumbnailItem: List<ThumbnailItem>,
-        listener: FiltersFragmentListener,
+        listener: FiltersFragmentListener?,
         context: FragmentActivity?
     ) : super() {
         this.thumbnailItem = thumbnailItem
-        this.listener = listener
+        this.listener = listener!!
         this.context = context!!
     }
 

@@ -1,8 +1,13 @@
 package com.example.sg772.textonimage
 
+import android.app.Dialog
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -11,6 +16,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.example.sg772.textonimage.Adapter.ThumbnailAdapter
 import com.example.sg772.textonimage.Interfaces.FiltersFragmentListener
 import com.example.sg772.textonimage.Utils.BitmapUtils
@@ -35,15 +41,42 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
+class ImageFiltersFragment : BottomSheetDialogFragment(), FiltersFragmentListener {
 
 
     // TODO: Rename and change types of parameters
-    lateinit var listener: FiltersFragmentListener
+    internal var listener: FiltersFragmentListener? = null
     lateinit var recyclerView: RecyclerView
+<<<<<<< HEAD
  var thumbnailList: ArrayList<ThumbnailItem>?=null
     lateinit var thumbnailAdapter: ThumbnailAdapter
+=======
+    lateinit var bitmap: Bitmap
+    internal var thumbnailList: MutableList<ThumbnailItem>?=null
+    internal lateinit var thumbnailAdapter: ThumbnailAdapter
 
+    companion object {
+        internal var instance: ImageFiltersFragment? = null
+        fun getInstance(): ImageFiltersFragment {
+            if (instance == null) {
+                instance = ImageFiltersFragment()
+            }
+            return instance!!
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        var dialog: Dialog = dialog
+        if (dialog != null) {
+            dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+>>>>>>> bottomNav
+
+
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,10 +92,13 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
         var space: Float = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8F, resources.displayMetrics)
         recyclerView.addItemDecoration(SpacesItemDecoration(space.toInt()))
         recyclerView.adapter = thumbnailAdapter
-        displayThumbNail(null)
+        var byteArray=arguments?.getByteArray("image")
+        bitmap= BitmapFactory.decodeByteArray(byteArray,0,byteArray!!.size)
+        displayThumbNail(bitmap)
         return itemView
     }
 
+<<<<<<< HEAD
     open fun displayThumbNail(bitmap: Bitmap?) {
         var runnable = object : Runnable {
             override fun run() {
@@ -96,38 +132,49 @@ class ImageFiltersFragment : Fragment(), FiltersFragmentListener {
                         thumbnailAdapter.notifyDataSetChanged()
                     }
                 })
+=======
+   open  fun displayThumbNail(bitmap: Bitmap?) {
+        var runnable = Runnable {
+
+            var thumbImg: Bitmap?
+            if (bitmap == null)
+                thumbImg = BitmapUtils.getBitmapFromAsests(activity, MainActivity.pictureName, 100, 100)
+            else
+                thumbImg = Bitmap.createScaledBitmap(bitmap, 100, 100, false)
+
+            if (thumbImg == null)
+                return@Runnable
+
+            ThumbnailsManager.clearThumbs()
+            thumbnailList?.clear()
+            val thumbnailItem = ThumbnailItem()
+            thumbnailItem.image = thumbImg
+            thumbnailItem.filterName = "Normal"
+            ThumbnailsManager.addThumb(thumbnailItem)
+            var filters = FilterPack.getFilterPack(activity!!) as MutableList
+            for (f in filters) {
+                val item = ThumbnailItem()
+                item.image = thumbImg
+                item.filter = f
+                item.filterName = f.name
+                ThumbnailsManager.addThumb(item)
+                Log.d("filterpack", f.name)
+            }
+            thumbnailList!!.addAll(ThumbnailsManager.processThumbs(activity))
+            activity!!.runOnUiThread {
+
+                thumbnailAdapter.notifyDataSetChanged()
+
+>>>>>>> bottomNav
             }
         }
+
         Thread(runnable).start()
     }
 
     override fun onFilterSelected(filter: Filter) {
         if (listener != null) {
-            listener.onFilterSelected(filter)
-        } else {
-            return
+            listener!!.onFilterSelected(filter)
         }
-
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-
 }
