@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         imageadd_menu = findViewById(R.id.adImage_menu)
         loadImage()
         imageFiltersFragment=ImageFiltersFragment.getInstance()
-
+        editImageFragment = EditImageFragment.newInstance()
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 if(imageFiltersFragment!=null){
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         })
         edit_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                var editImageFragment = EditImageFragment.newInstance()
+
                 editImageFragment.listener = this@MainActivity
                 editImageFragment.show(supportFragmentManager, editImageFragment.tag)
             }

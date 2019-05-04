@@ -35,9 +35,9 @@ class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChange
 
     // private var listener: OnFragmentInteractionListener? = null
     var listener: EditImageFragmentListener?=null
-    lateinit var seekbar_brightness: SeekBar
-    lateinit var seekbar_constrants: SeekBar
-    lateinit var seekbar_saturation: SeekBar
+    internal var seekbar_brightness: SeekBar?=null
+    internal var seekbar_constrants: SeekBar?=null
+   internal var seekbar_saturation: SeekBar?=null
 
     companion object {
         lateinit var instance:EditImageFragment
@@ -66,15 +66,15 @@ class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChange
         seekbar_brightness = itemView.findViewById(R.id.seekbar_brightness)
         seekbar_constrants = itemView.findViewById(R.id.seekbar_constraint)
         seekbar_saturation = itemView.findViewById(R.id.seekbar_saturation)
-        seekbar_brightness.max = 200
-        seekbar_brightness.setProgress(100)
-        seekbar_constrants.max = 20
-        seekbar_constrants.setProgress(0)
-        seekbar_saturation.max = 30
-        seekbar_saturation.setProgress(10)
-        seekbar_brightness.setOnSeekBarChangeListener(this)
-        seekbar_constrants.setOnSeekBarChangeListener(this)
-        seekbar_saturation.setOnSeekBarChangeListener(this)
+        seekbar_brightness?.max = 200
+        seekbar_brightness?.setProgress(100)
+        seekbar_constrants?.max = 20
+        seekbar_constrants?.setProgress(0)
+        seekbar_saturation?.max = 30
+        seekbar_saturation?.setProgress(10)
+        seekbar_brightness?.setOnSeekBarChangeListener(this)
+        seekbar_constrants?.setOnSeekBarChangeListener(this)
+        seekbar_saturation?.setOnSeekBarChangeListener(this)
         return itemView
     }
 
@@ -121,8 +121,8 @@ class EditImageFragment() : BottomSheetDialogFragment(), SeekBar.OnSeekBarChange
     }
 
     fun resetControlls() {
-        seekbar_brightness.setProgress(100)
-        seekbar_constrants.setProgress(0)
-        seekbar_saturation.setProgress(10)
+        seekbar_brightness?.setProgress(100)
+        seekbar_constrants?.setProgress(0)
+        seekbar_saturation?.setProgress(10)
     }
 }
