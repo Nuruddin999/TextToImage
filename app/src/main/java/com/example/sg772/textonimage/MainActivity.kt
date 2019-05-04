@@ -22,6 +22,8 @@ import com.zomato.photofilters.imageprocessors.subfilters.BrightnessSubFilter
 import com.zomato.photofilters.imageprocessors.subfilters.ContrastSubFilter
 import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter
 import android.Manifest.permission
+import android.content.res.Configuration
+import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.net.Uri
 import android.support.design.widget.Snackbar
@@ -162,6 +164,7 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
 
     private fun loadImage() {
         Log.d("pictureName", pictureName)
+
         original_filter_bitmap = BitmapUtils.getBitmapFromAsests(this, pictureName, 300, 300)
         filtered_bitmap = original_filter_bitmap!!.copy(Bitmap.Config.ARGB_8888, true)
         final_bitmap = original_filter_bitmap!!.copy(Bitmap.Config.ARGB_8888, true)
@@ -384,5 +387,21 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
 
 
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        var  byteArrayOutputStream=ByteArrayOutputStream()
+
+        original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
+        var byteArray=byteArrayOutputStream.toByteArray()
+        outState?.putByteArray("bitmap",byteArray)
+        super.onSaveInstanceState(outState)
+    }
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        var byteArray=savedInstanceState?.getByteArray("bitmap")
+      original_filter_bitmap= BitmapFactory.decodeByteArray(byteArray,0,byteArray!!.size)
+        image_preview.source.setImageBitmap(original_filter_bitmap)
+
     }
 }

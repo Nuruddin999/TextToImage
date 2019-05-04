@@ -26,7 +26,7 @@ import java.util.ArrayList
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-class TextFragment : DialogFragment(), ColorAdapter.ColorAdapterListener, FontAdapter.fontClickListener {
+class TextFragment : BottomSheetDialogFragment(), ColorAdapter.ColorAdapterListener, FontAdapter.fontClickListener {
 
 
     lateinit var color_list: RecyclerView
@@ -54,7 +54,7 @@ class TextFragment : DialogFragment(), ColorAdapter.ColorAdapterListener, FontAd
         if (dialog!=null){
             dialog.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT)
             dialog.window.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            dialog.window.setBackgroundDrawable(ColorDrawable(android.graphics.Color.BLACK))
+
 
         }
     }
@@ -81,7 +81,7 @@ class TextFragment : DialogFragment(), ColorAdapter.ColorAdapterListener, FontAd
         color_list.adapter = color_adapter
         done.setOnClickListener {
                 addTextLIstener?.adTextListener(typeface!!, text_input.text.toString(), selectedColor)
-                dismiss()
+
 
         }
         return view

@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context=".MainActivity"
-                tools:showIn="@layout/activity_main"
-                android:background="@color/colorPrimary"
-                android:orientation="vertical">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                             tools:context=".MainActivity"
+                                             tools:showIn="@layout/activity_main"
+                                             android:background="@color/colorPrimary"
+>
 
-    <ja.burhanrashid52.photoeditor.PhotoEditorView android:layout_width="match_parent"
-                                                   android:layout_height="400dp"
-                                                   android:scaleType="centerCrop"
-                                                   android:id="@+id/imagepreview"
+    <ja.burhanrashid52.photoeditor.PhotoEditorView
 
+            android:layout_height="wrap_content" android:id="@+id/imagepreview"
+            android:layout_width="match_parent"
 
+            app:layout_constraintBottom_toTopOf="@+id/menu_buttons"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
     />
 
     <HorizontalScrollView
             android:id="@+id/menu_buttons"
-android:fillViewport="true"
+            android:fillViewport="true"
             android:measureAllChildren="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-    >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp">
 
         <LinearLayout
                 android:layout_width="match_parent" android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                >
+        >
             <android.support.v7.widget.CardView
                     android:id="@+id/filters_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimary"
                     app:cardElevation="8dp"
-                    android:clickable="true">
+                    android:clickable="true"
+            app:cardCornerRadius="2px">
                 <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
                               android:orientation="vertical"
                               android:layout_gravity="center"
                               android:background="@color/colorPrimaryDark"
-                android:padding="8dp">
+                              android:padding="8dp">
                     <ImageView android:layout_width="40dp" android:layout_height="40dp"
                                android:src="@drawable/ic_photo_filter_black_24dp"
                                android:layout_gravity="center"/>
@@ -65,7 +71,7 @@ android:fillViewport="true"
                 <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
                               android:orientation="vertical"
                               android:layout_gravity="center"
-                                                   >
+                >
                     <ImageView android:layout_width="40dp" android:layout_height="40dp"
                                android:src="@drawable/ic_tonality_black_24dp"
                                android:layout_gravity="center"/>
@@ -148,4 +154,4 @@ android:fillViewport="true"
         </LinearLayout>
     </HorizontalScrollView>
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

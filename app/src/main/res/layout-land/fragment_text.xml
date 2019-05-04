@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+        android:layout_width="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_height="wrap_content">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  tools:context=".TextFragment"
+                  android:orientation="vertical"
+
+                  android:background="@color/colorPrimaryDark">
+
+        <!-- TODO: Update blank fragment layout -->
+        <EditText
+                android:id="@+id/text_input"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textAlignment="center"
+                android:background="@drawable/text_input_background"
+                android:hint="Enter text"
+
+        />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="Select font"
+                  android:textSize="18sp"
+                  android:textColor="#fff"
+                  android:typeface="sans"
+                  android:textStyle="bold"
+                  android:layout_marginLeft="12dp"
+        />
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/font_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        >
+
+        </android.support.v7.widget.RecyclerView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="Select color"
+                  android:textSize="18sp"
+                  android:textColor="#fff"
+                  android:typeface="sans"
+                  android:textStyle="bold"
+                  android:layout_marginLeft="12dp"
+        />
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/colors_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        >
+
+        </android.support.v7.widget.RecyclerView>
+
+        <Button
+                android:id="@+id/text_input_done_button"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Add text on image"
+                android:background="@drawable/addtext"
+                android:layout_marginTop="20sp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20sp"
+                android:paddingHorizontal="23dp"/>
+
+    </LinearLayout>
+</ScrollView>

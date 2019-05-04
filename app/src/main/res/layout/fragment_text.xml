@@ -5,6 +5,7 @@
               android:layout_height="match_parent"
               tools:context=".TextFragment"
 android:orientation="vertical"
+
 android:background="@color/colorPrimaryDark">
 
     <!-- TODO: Update blank fragment layout -->
