@@ -54,12 +54,23 @@ var row_selected=-1
 
     private fun loadfontlist(): List<String> {
         var fonts = ArrayList<String>()
-fonts.add("ABeeZee-Italic.ttf")
-        fonts.add("ABeeZee-Regular.ttf")
-        fonts.add("Abel-Regular.ttf")
-        fonts.add("AbrilFatface-Regular.ttf")
-        fonts.add("Acme-Regular.ttf")
-        fonts.add("Actor-Regular.ttf")
+fonts.add("bender.otf")
+       fonts.add("bender_bold.otf")
+      fonts.add("Bender-Italic.otf")
+       fonts.add("comfortaa_bold.ttf")
+        fonts.add("Comfortaa-Regular.ttf")
+        fonts.add("Days.otf")
+        fonts.add("Cuprum-Bold.ttf")
+        fonts.add("Cuprum-Italic.ttf")
+        fonts.add("Cuprum-Regular.ttf")
+        fonts.add("Perfograma.otf")
+        fonts.add("Sumkinfreetype.ttf")
+        fonts.add("sreda.otf")
+        fonts.add("bext.ttf")
+        fonts.add("Intro.otf")
+        fonts.add("mishkin.ttf")
+
+
 
         return fonts
     }
