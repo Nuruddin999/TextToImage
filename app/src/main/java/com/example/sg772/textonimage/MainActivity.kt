@@ -93,21 +93,18 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         editImageFragment = EditImageFragment.newInstance()
         filters_menu.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if(imageFiltersFragment!=null){
-                    var  byteArrayOutputStream=ByteArrayOutputStream()
-                    original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
-                    var byteArray=byteArrayOutputStream.toByteArray()
-                    var bundle=Bundle()
-                    bundle.putByteArray("image",byteArray)
-                    imageFiltersFragment.arguments=bundle
+
+               /*    var  byteArrayOutputStream=ByteArrayOutputStream()
+                  original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
+                  var byteArray=byteArrayOutputStream.toByteArray()
+                  var bundle=Bundle()
+                   bundle.putByteArray("image",byteArray)
+                  imageFiltersFragment.arguments=bundle*/
                     imageFiltersFragment!!.listener = this@MainActivity
 
                     /*  var fragmentTransaction=supportFragmentManager.beginTransaction().replace(R.id.content_area,imageFiltersFragment).commit()*/
-                    imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment!!.tag)}
-                else {
-                    return
-                }
-
+              //  imageFiltersFragment.displayThumbNail(original_filter_bitmap)
+                    imageFiltersFragment.show(supportFragmentManager, imageFiltersFragment!!.tag)
             }
         })
         edit_menu.setOnClickListener(object : View.OnClickListener {
@@ -370,7 +367,13 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
                     final_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     filtered_bitmap = original_filter_bitmap.copy(Bitmap.Config.ARGB_8888, true)
                     image_preview.source.setImageBitmap(original_filter_bitmap)
-                    //   imageFiltersFragment.displayThumbNail(original_filter_bitmap)
+                        var  byteArrayOutputStream=ByteArrayOutputStream()
+              original_filter_bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream)
+              var byteArray=byteArrayOutputStream.toByteArray()
+              var bundle=Bundle()
+               bundle.putByteArray("image",byteArray)
+              imageFiltersFragment.arguments=bundle
+                    // imageFiltersFragment.displayThumbNail(original_filter_bitmap)
 
 
 
@@ -389,19 +392,5 @@ class MainActivity : AppCompatActivity(), FiltersFragmentListener, EditImageFrag
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        var  byteArrayOutputStream=ByteArrayOutputStream()
 
-        original_filter_bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream)
-        var byteArray=byteArrayOutputStream.toByteArray()
-        outState?.putByteArray("bitmap",byteArray)
-        super.onSaveInstanceState(outState)
-    }
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        var byteArray=savedInstanceState?.getByteArray("bitmap")
-      original_filter_bitmap= BitmapFactory.decodeByteArray(byteArray,0,byteArray!!.size)
-        image_preview.source.setImageBitmap(original_filter_bitmap)
-
-    }
 }
